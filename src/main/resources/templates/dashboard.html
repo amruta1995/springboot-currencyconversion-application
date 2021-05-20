@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Currency Converter</title>
+</head>
+<body>
+	<div class="container">
+		<h1>Currency Converter</h1>
+
+		<form th:action="@{/dashboard}"
+			th:object="${historicalCurrencyRatesQuery}" method="post">
+			<p>
+				Currency : <select th:field="*{currency}">
+					<option th:value="'USD'" th:text="USD"></option>
+					<option th:value="'GBP'" th:text="GBP"></option>
+				</select>
+			</p>
+			<p>
+				Date : <input th:field="*{date}" type="date">
+			</p>
+			<p>
+				<input type="submit" value="Get Conversion Rates" />
+			</p>
+		</form>
+
+		<div th:if="${not #maps.isEmpty(rates)}">
+			Conversion Rates :
+			<table border="1">
+				<tr>
+					<th>Currency Name</th>
+					<th>Conversion Rate</th>
+				</tr>
+				<tr th:each="entry : ${rates.entrySet()}">
+					<td th:text="${entry.key}"></td>
+					<td th:text="${entry.value}"></td>
+				</tr>
+			</table>
+		</div>
+
+		<div th:if="${not #lists.isEmpty(historicalRates)}">
+			Historical Conversion Rates :
+			<table border="1">
+				<tr>
+					<th>Currency Name</th>
+					<th>Date</th>
+					<th>Conversion Rates</th>
+				</tr>
+				<tr th:each="entry : ${historicalRates}">
+					<td th:text="${entry.currency}"></td>
+					<td th:text="${entry.date}"></td>
+					<td th:text="${entry.rates}"></td>
+				</tr>
+			</table>
+		</div>
+
+	</div>
+</body>
+</html>
